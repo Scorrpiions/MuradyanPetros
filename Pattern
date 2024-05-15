@@ -1,0 +1,125 @@
+1. For the design pattern, let's choose the Observer pattern. It's a behavioral pattern that allows one-to-many dependencies between objects, so that when one object changes state, all its dependents are notified and updated automatically.
+
+2. Create a Git repository with two branches:
+   ```bash
+   git init design_pattern_repo
+   cd design_pattern_repo
+   git checkout -b dev
+   git branch main
+   ```
+
+3. Implement the Observer pattern in your desired programming language. Below is an example implementation in Java:
+
+   ```java
+   import java.util.ArrayList;
+   import java.util.List;
+
+   // Subject interface
+   interface Subject {
+       void registerObserver(Observer observer);
+       void removeObserver(Observer observer);
+       void notifyObservers();
+   }
+
+   // Concrete Subject
+   class WeatherStation implements Subject {
+       private int temperature;
+       private List<Observer> observers;
+
+       public WeatherStation() {
+           observers = new ArrayList<>();
+       }
+
+       public void setTemperature(int temperature) {
+           this.temperature = temperature;
+           notifyObservers();
+       }
+
+       @Override
+       public void registerObserver(Observer observer) {
+           observers.add(observer);
+       }
+
+       @Override
+       public void removeObserver(Observer observer) {
+           observers.remove(observer);
+       }
+
+       @Override
+       public void notifyObservers() {
+           for (Observer observer : observers) {
+               observer.update(temperature);
+           }
+       }
+   }
+
+   // Observer interface
+   interface Observer {
+       void update(int temperature);
+   }
+
+   // Concrete Observer
+   class Display implements Observer {
+       @Override
+       public void update(int temperature) {
+           System.out.println("Temperature updated: " + temperature);
+       }
+   }
+
+   // Test the Observer pattern
+   public class ObserverPatternTest {
+       public static void main(String[] args) {
+           WeatherStation weatherStation = new WeatherStation();
+           Display display = new Display();
+
+           weatherStation.registerObserver(display);
+
+           // Simulate temperature change
+           weatherStation.setTemperature(25);
+       }
+   }
+   ```
+
+4. Add a unit test for the Observer pattern. Below is an example of a JUnit test for the Observer pattern implemented in Java:
+
+   ```java
+   import org.junit.jupiter.api.Test;
+
+   import static org.junit.jupiter.api.Assertions.*;
+
+   class ObserverPatternTest {
+
+       @Test
+       void testObserverPattern() {
+           WeatherStation weatherStation = new WeatherStation();
+           Display display = new Display();
+
+           weatherStation.registerObserver(display);
+
+           // Set temperature and check if display updates
+           weatherStation.setTemperature(25);
+           // Assuming Display class has a method to capture the updated temperature
+           assertEquals(25, display.getTemperature());
+       }
+   }
+   ```
+
+5. Commit and push the implementation and unit test to the dev branch:
+   ```bash
+   git add .
+   git commit -m "Implement Observer pattern and add unit test"
+   git push origin dev
+   ```
+
+6. Merge the dev branch into the main branch:
+   ```bash
+   git checkout main
+   git merge dev
+   ```
+
+7. Push the main branch:
+   ```bash
+   git push origin main
+   ```
+
+This sequence of steps will create a Git repository, implement the Observer pattern, add a unit test, and push the changes to both the dev and main branches.
